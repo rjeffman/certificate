@@ -6,9 +6,20 @@
 - name: Ensure python3 is installed
   package:
     name:
-      - python3
+      - python2-cryptography
+      - python2-cryptography
+  when:
+    - ansible_distribution_major_version == "7"
+      and ansible_os_family == "RedHat"
+
+- name: Ensure python3 is installed
+  package:
+    name:
       - python3-cryptography
       - python3-pyasn1
+  when:
+    - ansible_distribution_major_version != "7"
+      and ansible_os_family == "RedHat"
 
 - name: Retrieve certificate file stats
   stat:
@@ -67,8 +78,6 @@
     filename: "{{ cert['path'] }}"
   register: certificate_data
   changed_when: false
-  vars:
-    ansible_python_interpreter: "/usr/bin/python3"
 
 - name: Load certificate YAML to cert_issued variable
   set_fact:

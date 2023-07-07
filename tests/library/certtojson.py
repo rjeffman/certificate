@@ -29,7 +29,8 @@ def parse_cert_timestamp(cert_datetime):
 
 def to_hex_str(value):
     """Convert byte list to "XX:XX:XX..." string."""
-    return ":".join(f"{byte:02X}" for byte in value)
+    # pylint: disable=C0209
+    return ":".join("{0:02X}".format(byte) for byte in value)
 
 
 def decode_kerberos_principalname(data):
